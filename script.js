@@ -541,3 +541,21 @@ window.findRoute = function() {
         </div>
     `;
 };
+
+// Hamburger menu logic
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mainTabs = document.getElementById('mainTabs');
+    hamburgerBtn.addEventListener('click', function() {
+        mainTabs.classList.toggle('open');
+    });
+
+    // Optional: close menu when a tab is clicked (on mobile)
+    mainTabs.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            if (window.innerWidth <= 800) {
+                mainTabs.classList.remove('open');
+            }
+        });
+    });
+});
