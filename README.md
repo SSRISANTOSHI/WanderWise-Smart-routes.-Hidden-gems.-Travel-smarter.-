@@ -20,3 +20,4 @@ WanderWise – Smarter routes. Local secrets. Personalized adventures.
 Navigate like a local. Discover like a traveler.
 
 Your smart travel guide to the unseen.
+you can add any changes to it
