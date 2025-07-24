@@ -21,3 +21,8 @@ Navigate like a local. Discover like a traveler.
 
 Your smart travel guide to the unseen.
 you can add any changes to it
+
+💻 Potential issues to work on:
+#1: Improve the UI
+#2: Import a database to keep track of login, signup etc.
+#3: Integrate an AI chatbot if possible to help navigate the website.
