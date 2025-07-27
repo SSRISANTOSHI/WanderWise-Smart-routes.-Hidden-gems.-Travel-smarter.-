@@ -71,3 +71,6 @@ node_modules/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Ignore functions/.env.txt
+functions/.env.txt
