@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ message: userMessage }),
       });
 
+
       const data = await response.json();
       const botReply = data.reply || "Sorry, no reply.";
       chatbox.lastChild.querySelector("p").textContent = botReply;

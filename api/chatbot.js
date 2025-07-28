@@ -1,14 +1,4 @@
-const { OpenAI } = require('openai');
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export default async function handler(req, res) {
   const { message } = req.body;
 
   if (!message) {
@@ -16,15 +6,32 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: message }],
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'openai/gpt-4o-mini',  // use the same model you tested
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'user', content: message }
+        ]
+      })
     });
 
-    const reply = completion.choices[0].message.content;
-    res.status(200).json({ reply });
+
+    const data = await response.json();
+
+    if (data.choices && data.choices[0]) {
+      res.status(200).json({ reply: data.choices[0].message.content });
+    } else {
+      res.status(500).json({ error: 'No response from model' });
+    }
+
   } catch (error) {
-    console.error('OpenAI API Error:', error);
+    console.error('Error:', error);
     res.status(500).json({ error: 'Something went wrong.' });
   }
-};
+}
