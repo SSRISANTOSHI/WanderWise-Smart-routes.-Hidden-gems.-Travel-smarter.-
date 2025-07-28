@@ -10,7 +10,6 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-app.use(cors());
 
 app.use(cors({
   origin: process.env.FRONTEND_ORIGIN || 'http://localhost:3000',
