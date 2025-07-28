@@ -23,12 +23,16 @@
     const token = localStorage.getItem("token");
 
     if (auth && token) headers.Authorization = `Bearer ${token}`;
+    const headers = { "Content-Type": "application/json" };
+    // No need to send Authorization header, JWT is in cookie
 
     const res = await fetch(`${AUTH_URL}${path}`, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      credentials: 'include', // Send cookies with request
     });
+
 
     let data;
     try {
@@ -79,6 +83,8 @@
 
   function logout() {
     localStorage.removeItem("token");
+    // Remove token cookie by expiring it (optional, backend should provide a logout endpoint for full security)
+    document.cookie = 'token=; Max-Age=0; path=/;';
     setAuthUI({ loggedIn: false });
     safeNotify("Logged out");
   }
@@ -176,6 +182,7 @@
 
         try {
           const { token } = await api("/login", {
+          await api("/login", {
             method: "POST",
             auth: false,
             body: { email, password },
