@@ -1,11 +1,22 @@
 export default async function handler(req, res) {
-  const { message } = req.body;
-
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Only POST requests allowed' });
   }
 
   try {
+    const body = req.body || (await new Promise((resolve, reject) => {
+      let data = '';
+      req.on('data', chunk => data += chunk);
+      req.on('end', () => resolve(JSON.parse(data)));
+      req.on('error', reject);
+    }));
+
+    const { message } = body;
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -16,25 +27,18 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "openai/gpt-4o-mini",
-        messages: [{ role: "user", content: userMessage }],
+        messages: [{ role: "user", content: message }],
       }),
     });
-
-
 
     const result = await response.json();
     console.log("OpenRouter API response:", result);
 
     if (!result.choices || result.choices.length === 0) {
-  return res.status(500).json({ error: "No response from model" });
-}
-
-
-    if (data.choices && data.choices[0]) {
-      res.status(200).json({ reply: data.choices[0].message.content });
-    } else {
-      res.status(500).json({ error: 'No response from model' });
+      return res.status(500).json({ error: "No response from model" });
     }
+
+    res.status(200).json({ reply: result.choices[0].message.content });
 
   } catch (error) {
     console.error('Error:', error);
