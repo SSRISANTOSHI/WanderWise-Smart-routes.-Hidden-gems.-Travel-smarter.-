@@ -19,10 +19,7 @@
   }
 
   async function api(path, { method = "GET", body, auth = true } = {}) {
-    const headers = { "Content-Type": "application/json" };
-    const token = localStorage.getItem("token");
 
-    if (auth && token) headers.Authorization = `Bearer ${token}`;
     const headers = { "Content-Type": "application/json" };
     // No need to send Authorization header, JWT is in cookie
 
@@ -82,7 +79,6 @@
   }
 
   function logout() {
-    localStorage.removeItem("token");
     // Remove token cookie by expiring it (optional, backend should provide a logout endpoint for full security)
     document.cookie = 'token=; Max-Age=0; path=/;';
     setAuthUI({ loggedIn: false });
@@ -181,14 +177,12 @@
         const password = $("loginPassword").value;
 
         try {
-          const { token } = await api("/login", {
           await api("/login", {
             method: "POST",
             auth: false,
             body: { email, password },
           });
 
-          localStorage.setItem("token", token);
           await loadUserProfile();
           safeNotify("Login successful!");
           closeModal(loginModal);
