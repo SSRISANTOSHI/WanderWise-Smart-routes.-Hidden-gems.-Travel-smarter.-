@@ -1,47 +1,52 @@
-// --- Chatbot JavaScript ---
 const chatbotToggler = document.querySelector(".chatbot-toggler");
 const closeBtn = document.querySelector(".chatbot .close-btn");
-
-// This is the crucial part that makes the chatbot visible
-chatbotToggler.addEventListener("click", () => {
-    document.body.classList.toggle("show-chatbot");
-});
-
-// This allows the user to close it
-closeBtn.addEventListener("click", () => {
-    document.body.classList.remove("show-chatbot");
-});
-
-// The rest of the chatbot logic for sending messages...
 const chatbox = document.querySelector(".chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
-const sendChatBtn = document.querySelector(".chat-input span");
+const sendChatBtn = document.querySelector("#send-btn");
 
-const handleChat = () => {
-    const userMessage = chatInput.value.trim();
-    if (!userMessage) return;
+chatbotToggler.addEventListener("click", () =>
+  document.querySelector(".chatbot").classList.toggle("active")
+);
+closeBtn.addEventListener("click", () =>
+  document.querySelector(".chatbot").classList.remove("active")
+);
 
-    chatInput.value = "";
+const createChatLi = (message, className) => {
+  const li = document.createElement("li");
+  li.classList.add("chat", className);
+  let content =
+    className === "outgoing"
+      ? `<p>${message}</p>`
+      : `<span class="material-symbols-outlined">smart_toy</span><p>${message}</p>`;
+  li.innerHTML = content;
+  return li;
+};
 
-    const outgoingChatLi = document.createElement("li");
-    outgoingChatLi.classList.add("chat", "outgoing");
-    outgoingChatLi.innerHTML = `<p>${userMessage}</p>`;
-    chatbox.appendChild(outgoingChatLi);
-    chatbox.scrollTo(0, chatbox.scrollHeight);
+const handleChat = async () => {
+  const userMessage = chatInput.value.trim();
+  if (!userMessage) return;
 
-    setTimeout(() => {
-        const incomingChatLi = document.createElement("li");
-        incomingChatLi.classList.add("chat", "incoming");
-        incomingChatLi.innerHTML = `<span class="material-symbols-outlined">smart_toy</span><p>Let me check the best options for that...</p>`;
-        chatbox.appendChild(incomingChatLi);
-        chatbox.scrollTo(0, chatbox.scrollHeight);
-    }, 800);
-}
+  chatInput.value = "";
+  chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+  chatbox.appendChild(createChatLi("Thinking...", "incoming"));
+  chatbox.scrollTo(0, chatbox.scrollHeight);
+
+  try {
+    const response = await fetch('/api/chatbot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userMessage }),
+    });
+
+
+    const data = await response.json();
+    const botReply = data.reply || "Sorry, no reply.";
+    chatbox.lastChild.querySelector("p").textContent = botReply;
+  } catch (error) {
+    chatbox.lastChild.querySelector("p").textContent =
+      "Oops, something went wrong.";
+    console.error("Fetch error:", error);
+  }
+};
 
 sendChatBtn.addEventListener("click", handleChat);
-chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleChat();
-    }
-});

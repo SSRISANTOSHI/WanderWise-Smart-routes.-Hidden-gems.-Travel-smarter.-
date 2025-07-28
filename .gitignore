@@ -74,3 +74,5 @@ Thumbs.db
 
 # Ignore functions/.env.txt
 functions/.env.txt
+
+.vercel
