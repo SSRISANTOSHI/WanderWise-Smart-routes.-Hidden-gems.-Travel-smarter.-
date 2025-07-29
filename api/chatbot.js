@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Only POST requests allowed' });
@@ -11,11 +13,11 @@ export default async function handler(req, res) {
       req.on('error', reject);
     }));
 
-    const { message } = body;
+    const { messages } = body;
 
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
-    }
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+  return res.status(400).json({ error: 'Messages array is required' });
+}
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -27,7 +29,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "openai/gpt-4o-mini",
-        messages: [{ role: "user", content: message }],
+        messages: messages
       }),
     });
 
