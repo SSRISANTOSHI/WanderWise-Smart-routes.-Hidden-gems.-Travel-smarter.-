@@ -67,3 +67,7 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# OS files
+.DS_Store
+Thumbs.db
