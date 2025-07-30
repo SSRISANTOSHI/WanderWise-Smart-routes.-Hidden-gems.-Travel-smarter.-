@@ -25,7 +25,7 @@
             --text-secondary: #adb5bd;
             --accent-primary: #4895ef;
             --accent-secondary: #3a0ca3;
-            --accent-tertiary: #4cc9f0;
+            --accent-tertiary: #083947;
             --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
@@ -36,9 +36,13 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        body {
+body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-primary);
+            background-image: url('https://img.freepik.com/free-vector/realistic-travel-background-with-elements_52683-77784.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -57,7 +61,7 @@
             margin-bottom: 30px;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             border-radius: var(--border-radius);
-            color: white;
+            color: rgb(233, 229, 230);
             box-shadow: var(--box-shadow);
             position: relative;
             overflow: hidden;
@@ -211,12 +215,12 @@
             gap: 8px;
         }
 
-        .form-group input,
+.form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 14px 16px;
-            border: 1px solid #ddd;
+            border: 1px solid black;
             border-radius: 8px;
             font-family: 'Nunito', sans-serif;
             font-size: 1rem;
@@ -240,10 +244,10 @@
         }
 
         /* Button styles */
-        .btn {
+.btn {
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
-            border: none;
+            border: 1px solid black;
             padding: 14px 25px;
             border-radius: 8px;
             font-family: 'Poppins', sans-serif;
@@ -267,10 +271,11 @@
             transform: translateY(0);
         }
 
-        .btn-secondary {
+.btn-secondary {
             background: var(--bg-tertiary);
             color: var(--text-primary);
             box-shadow: none;
+            border: 1px solid black;
         }
 
         .btn-secondary:hover {
@@ -1034,7 +1039,7 @@
 
 /* Make header auth buttons readable on the gradient */
 .header #authControls .btn.btn-secondary {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(222, 18, 18, 0.18);
     color: #fff;
 }
 .header #authControls .btn.btn-secondary:hover {
@@ -1085,8 +1090,6 @@
     position: relative;
     z-index: 1001;
 }
-
-
 
 
 
