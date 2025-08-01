@@ -121,6 +121,18 @@
             transform: rotate(20deg);
         }
 
+        .info-box{
+            font: large;
+            text-align: centre;
+            min-width: 200px;
+            margin-bottom: 3%;
+            border-radius: 20px;
+            justify-content: grid;
+            position: relative;
+            font-weight: 20%;
+            padding:20px;
+        }
+
         /* Tabs container */
         .tabs-container {
             background-color: var(--bg-secondary);
